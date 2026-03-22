@@ -1,0 +1,51 @@
+# Firebase App Hosting configuration
+# Docs: https://firebase.google.com/docs/app-hosting/configure
+
+runConfig:
+  # Minimum instances to keep warm (0 = scale to zero, costs less)
+  minInstances: 0
+  # Max concurrent requests per instance
+  concurrency: 80
+  # Cloud Run region — pick closest to Bangladesh users
+  # asia-south1 = Mumbai (closest available)
+
+env:
+  # Public env vars (safe to expose to browser)
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    value: AIzaSyCb5FfouHpIhxSoUHud4qOcSQlpxgcOrZM
+
+  - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    value: mk-travel-agency.firebaseapp.com
+
+  - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    value: mk-travel-agency
+
+  - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    value: mk-travel-agency.firebasestorage.app
+
+  - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    value: "478218945063"
+
+  - variable: NEXT_PUBLIC_FIREBASE_APP_ID
+    value: 1:478218945063:web:5d9b2a7e18b5bbe7f50402
+
+  - variable: NEXTAUTH_URL
+    value: https://mk-travel-agency--mk-travel-agency.asia-south1.hosted.app
+
+  # Secret env vars — stored in Google Cloud Secret Manager
+  # Run these commands once to create the secrets:
+  #   firebase apphosting:secrets:set MONGODB_URI
+  #   firebase apphosting:secrets:set AUTH_SECRET
+  #   firebase apphosting:secrets:set AUTH_GOOGLE_ID
+  #   firebase apphosting:secrets:set AUTH_GOOGLE_SECRET
+  - variable: MONGODB_URI
+    secret: MONGODB_URI
+
+  - variable: AUTH_SECRET
+    secret: AUTH_SECRET
+
+  - variable: AUTH_GOOGLE_ID
+    secret: AUTH_GOOGLE_ID
+
+  - variable: AUTH_GOOGLE_SECRET
+    secret: AUTH_GOOGLE_SECRET
