@@ -4,7 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { FaGoogle, FaArrowRight, FaStar } from "react-icons/fa";
+import { FaArrowRight, FaStar, FaEye, FaEyeSlash } from "react-icons/fa";
 import { MdEmail, MdLock, MdFlight, MdVerified } from "react-icons/md";
 
 const REVIEWS = [
@@ -18,6 +18,7 @@ export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPass, setShowPass] = useState(false);
 
   function handleChange(e) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -169,10 +170,17 @@ export default function LoginPage() {
               <div className="relative">
                 <MdLock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-xl" />
                 <input
-                  type="password" name="password" value={form.password} onChange={handleChange}
+                  type={showPass ? "text" : "password"} name="password" value={form.password} onChange={handleChange}
                   placeholder="••••••••" required
-                  className="w-full bg-slate-900 border border-slate-700 text-white placeholder-slate-600 rounded-2xl pl-12 pr-4 py-4 text-sm font-bold focus:outline-none focus:border-emerald-500 focus:bg-slate-800 transition-all"
+                  className="w-full bg-slate-900 border border-slate-700 text-white placeholder-slate-600 rounded-2xl pl-12 pr-12 py-4 text-sm font-bold focus:outline-none focus:border-emerald-500 focus:bg-slate-800 transition-all"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPass((p) => !p)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                >
+                  {showPass ? <FaEyeSlash /> : <FaEye />}
+                </button>
               </div>
             </div>
 

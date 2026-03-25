@@ -3,8 +3,15 @@ import { FaArrowRight, FaStar, FaMapMarkerAlt } from "react-icons/fa";
 import { MdBeachAccess, MdForest, MdLandscape, MdFlight } from "react-icons/md";
 
 export const metadata = {
-  title: "Destinations — বাংলাদেশের সেরা গন্তব্য",
-  description: "কক্সবাজার, সুন্দরবন, সিলেট, বান্দরবান, সেন্ট মার্টিন ও রাঙামাটি — বাংলাদেশের সেরা ভ্রমণ গন্তব্যগুলো আবিষ্কার করুন।",
+  title: "Destinations | বাংলাদেশের সেরা গন্তব্য — MK Travel Agency",
+  description: "কক্সবাজার, সুন্দরবন, সিলেট, বান্দরবান, সেন্ট মার্টিন ও রাঙামাটি — বাংলাদেশের সেরা ভ্রমণ গন্তব্যগুলো আবিষ্কার করুন। প্রতিটি গন্তব্যের বিস্তারিত তথ্য ও ট্যুর প্যাকেজ।",
+  alternates: { canonical: "https://mk-travel-agency.vercel.app/destinations" },
+  openGraph: {
+    title: "Destinations | বাংলাদেশের সেরা গন্তব্য",
+    description: "কক্সবাজার, সুন্দরবন, সিলেট, বান্দরবান, সেন্ট মার্টিন ও রাঙামাটি — বাংলাদেশের সেরা ভ্রমণ গন্তব্য।",
+    url: "https://mk-travel-agency.vercel.app/destinations",
+    images: [{ url: "https://images.unsplash.com/photo-1596402184320-417e7178b2cd?w=1200&q=80", width: 1200, height: 630, alt: "Bangladesh Destinations" }],
+  },
 };
 
 const destinations = [

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { FaArrowRight } from "react-icons/fa";
+import { FaArrowRight, FaEye, FaEyeSlash } from "react-icons/fa";
 import { MdEmail, MdLock, MdPerson, MdFlight, MdVerified, MdBeachAccess, MdForest, MdLandscape } from "react-icons/md";
 
 const DESTINATIONS = [
@@ -16,11 +16,33 @@ const DESTINATIONS = [
   { name: "রাঙামাটি",  icon: <MdLandscape />,    color: "from-rose-700 to-pink-900" },
 ];
 
+// পাসওয়ার্ড শক্তি চেক করার ফাংশন
+function checkStrength(password) {
+  const checks = [
+    { label: "৮+ অক্ষর",       pass: password.length >= 8 },
+    { label: "বড় হাতের অক্ষর", pass: /[A-Z]/.test(password) },
+    { label: "ছোট হাতের অক্ষর", pass: /[a-z]/.test(password) },
+    { label: "সংখ্যা",          pass: /[0-9]/.test(password) },
+    { label: "বিশেষ চিহ্ন",     pass: /[^A-Za-z0-9]/.test(password) },
+  ];
+  const score = checks.filter((c) => c.pass).length;
+  const levels = [
+    { label: "",          color: "bg-slate-700" },
+    { label: "খুব দুর্বল", color: "bg-rose-500"   },
+    { label: "দুর্বল",    color: "bg-orange-500"  },
+    { label: "মাঝারি",    color: "bg-yellow-500"  },
+    { label: "ভালো",      color: "bg-blue-500"    },
+    { label: "শক্তিশালী", color: "bg-emerald-500" },
+  ];
+  return { checks, score, ...levels[score] };
+}
+
 export default function RegisterPage() {
   const router = useRouter();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPass, setShowPass] = useState(false);
 
   function handleChange(e) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -157,9 +179,8 @@ export default function RegisterPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {[
-              { name: "name",     label: "পূর্ণ নাম",  type: "text",     placeholder: "আপনার নাম",       Icon: MdPerson },
-              { name: "email",    label: "ইমেইল",       type: "email",    placeholder: "your@email.com",  Icon: MdEmail  },
-              { name: "password", label: "পাসওয়ার্ড",  type: "password", placeholder: "কমপক্ষে ৬ অক্ষর", Icon: MdLock   },
+              { name: "name",  label: "পূর্ণ নাম", type: "text",  placeholder: "আপনার নাম",      Icon: MdPerson },
+              { name: "email", label: "ইমেইল",      type: "email", placeholder: "your@email.com", Icon: MdEmail  },
             ].map(({ name, label, type, placeholder, Icon }) => (
               <div key={name}>
                 <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">
@@ -170,12 +191,61 @@ export default function RegisterPage() {
                   <input
                     type={type} name={name} value={form[name]} onChange={handleChange}
                     placeholder={placeholder} required
-                    minLength={name === "password" ? 6 : undefined}
                     className="w-full bg-slate-900 border border-slate-700 text-white placeholder-slate-600 rounded-2xl pl-12 pr-4 py-4 text-sm font-bold focus:outline-none focus:border-emerald-500 focus:bg-slate-800 transition-all"
                   />
                 </div>
               </div>
             ))}
+
+            {/* Password with toggle */}
+            <div>
+              <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">
+                পাসওয়ার্ড
+              </label>
+              <div className="relative">
+                <MdLock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-xl" />
+                <input
+                  type={showPass ? "text" : "password"}
+                  name="password" value={form.password} onChange={handleChange}
+                  placeholder="কমপক্ষে ৬ অক্ষর" required minLength={6}
+                  className="w-full bg-slate-900 border border-slate-700 text-white placeholder-slate-600 rounded-2xl pl-12 pr-12 py-4 text-sm font-bold focus:outline-none focus:border-emerald-500 focus:bg-slate-800 transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPass((p) => !p)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                >
+                  {showPass ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+            </div>
+
+            {/* Password Strength Indicator */}
+            {form.password.length > 0 && (() => {
+              const { checks, score, label, color } = checkStrength(form.password);
+              return (
+                <div className="mt-3 space-y-2">
+                  <div className="flex gap-1">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <div
+                        key={i}
+                        className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${i <= score ? color : "bg-slate-800"}`}
+                      />
+                    ))}
+                  </div>
+                  <p className={`text-xs font-bold ${score <= 1 ? "text-rose-400" : score === 2 ? "text-orange-400" : score === 3 ? "text-yellow-400" : score === 4 ? "text-blue-400" : "text-emerald-400"}`}>
+                    পাসওয়ার্ড শক্তি: {label}
+                  </p>
+                  <div className="grid grid-cols-2 gap-1">
+                    {checks.map((c) => (
+                      <div key={c.label} className={`flex items-center gap-1.5 text-[11px] font-bold ${c.pass ? "text-emerald-400" : "text-slate-600"}`}>
+                        <span>{c.pass ? "✓" : "○"}</span> {c.label}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
 
             {error && (
               <div className="bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm font-bold rounded-2xl px-4 py-3">

@@ -2,16 +2,30 @@ import mongoose from "mongoose";
 
 const packageSchema = new mongoose.Schema(
   {
-    title: { type: String, required: true },
+    title:       { type: String, required: true },
     description: { type: String, required: true },
     destination: { type: String, required: true },
-    price: { type: Number, required: true },
-    duration: { type: String, required: true }, // e.g. "7 Days / 6 Nights"
-    image: { type: String, required: true },
-    category: { type: String, enum: ["adventure", "beach", "cultural", "honeymoon", "family"], default: "beach" },
-    rating: { type: Number, default: 4.5 },
-    featured: { type: Boolean, default: false },
-    includes: [String], // e.g. ["Hotel", "Flights", "Meals"]
+    division:    { type: String, default: "" },
+    price:       { type: Number, required: true },
+    oldPrice:    { type: Number },
+    duration:    { type: String, required: true }, // "৩ দিন / ২ রাত"
+    image:       { type: String, required: true },
+    gallery:     [String], // extra images
+    category:    { type: String, enum: ["adventure", "beach", "cultural", "honeymoon", "family"], default: "beach" },
+    rating:      { type: Number, default: 4.5 },
+    featured:    { type: Boolean, default: false },
+    isFlashDeal: { type: Boolean, default: false },
+    maxGroupSize:{ type: Number, default: 15 },
+    includes:    [String], // ["হোটেল", "পরিবহন", "গাইড"]
+    excludes:    [String], // ["বিমান টিকিট", "ব্যক্তিগত খরচ"]
+    highlights:  [String], // ["সূর্যাস্ত দেখা", "নৌকা ভ্রমণ"]
+    itinerary: [
+      {
+        day:         { type: Number },
+        title:       { type: String },
+        description: { type: String },
+      },
+    ],
   },
   { timestamps: true }
 );

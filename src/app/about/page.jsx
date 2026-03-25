@@ -1,7 +1,17 @@
 import { FaAward, FaGlobe, FaHeart, FaUsers, FaStar, FaArrowRight } from "react-icons/fa";
 import Link from "next/link";
 
-export const metadata = { title: "About Us | MK Travel Agency" };
+export const metadata = {
+  title: "About Us | MK Travel Agency",
+  description: "MK Travel Agency সম্পর্কে জানুন। ২০১৫ সাল থেকে বাংলাদেশের মানুষের ভ্রমণকে স্মরণীয় করে তুলছি আমরা। আমাদের টিম, মিশন ও মূল্যবোধ সম্পর্কে জানুন।",
+  alternates: { canonical: "https://mk-travel-agency.vercel.app/about" },
+  openGraph: {
+    title: "About MK Travel Agency",
+    description: "২০১৫ সাল থেকে বাংলাদেশের মানুষের ভ্রমণকে স্মরণীয় করে তুলছি আমরা।",
+    url: "https://mk-travel-agency.vercel.app/about",
+    images: [{ url: "https://images.unsplash.com/photo-1488085061387-422e29b40080?w=1200&q=80", width: 1200, height: 630, alt: "About MK Travel Agency" }],
+  },
+};
 
 const team = [
   { name: "Mohammad Karim", role: "CEO & Founder", img: "https://i.pravatar.cc/150?img=11" },

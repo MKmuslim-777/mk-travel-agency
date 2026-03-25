@@ -1,5 +1,4 @@
-import { connectDB } from "@/lib/mongodb";
-import User from "@/models/User";
+import { connect } from "@/lib/mongodb";
 import bcrypt from "bcryptjs";
 
 export async function POST(request) {
@@ -7,21 +6,34 @@ export async function POST(request) {
     const { name, email, password } = await request.json();
 
     if (!name || !email || !password) {
-      return Response.json({ error: "All fields are required" }, { status: 400 });
+      return Response.json({ error: "সব তথ্য পূরণ করুন।" }, { status: 400 });
     }
 
-    await connectDB();
+    if (password.length < 6) {
+      return Response.json({ error: "পাসওয়ার্ড কমপক্ষে ৬ অক্ষর হতে হবে।" }, { status: 400 });
+    }
 
-    const existing = await User.findOne({ email });
+    const users = await connect("users");
+
+    // Check duplicate email
+    const existing = await users.findOne({ email: email.toLowerCase().trim() });
     if (existing) {
-      return Response.json({ error: "Email already registered" }, { status: 409 });
+      return Response.json({ error: "এই ইমেইল দিয়ে আগেই অ্যাকাউন্ট আছে।" }, { status: 409 });
     }
 
-    const hashed = await bcrypt.hash(password, 10);
-    await User.create({ name, email, password: hashed });
+    // Hash password and save
+    const hashed = bcrypt.hashSync(password, 10);
+    await users.insertOne({
+      name: name.trim(),
+      email: email.toLowerCase().trim(),
+      password: hashed,
+      role: "user",
+      createdAt: new Date(),
+    });
 
-    return Response.json({ message: "Account created successfully" }, { status: 201 });
+    return Response.json({ message: "অ্যাকাউন্ট তৈরি হয়েছে।" }, { status: 201 });
   } catch (err) {
-    return Response.json({ error: "Server error" }, { status: 500 });
+    console.error("Register error:", err);
+    return Response.json({ error: "সার্ভার সমস্যা হয়েছে।" }, { status: 500 });
   }
 }

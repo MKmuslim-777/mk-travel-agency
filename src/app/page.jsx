@@ -1,22 +1,22 @@
 import Link from "next/link";
 import PackageCard from "@/components/PackageCard";
-import { connectDB } from "@/lib/mongodb";
-import Package from "@/models/Package";
 import {
-  FaStar,
-  FaArrowRight,
-  FaShieldAlt,
-  FaHeadset,
-  FaHotel,
-  FaCar,
+  FaStar, FaArrowRight, FaShieldAlt, FaHeadset, FaHotel, FaCar,
 } from "react-icons/fa";
-import {
-  MdVerified,
-  MdBeachAccess,
-  MdForest,
-  MdLandscape,
-  MdFlight,
-} from "react-icons/md";
+import { MdVerified, MdBeachAccess, MdForest, MdLandscape, MdFlight } from "react-icons/md";
+import { connect } from "@/lib/mongodb";
+
+export const metadata = {
+  title: "MK Travel Agency | বাংলাদেশের সেরা ট্যুর অপারেটর",
+  description: "বাংলাদেশের সেরা ট্যুর প্যাকেজ। কক্সবাজার, সুন্দরবন, সিলেট, বান্দরবান, সেন্ট মার্টিন ও রাঙামাটিতে ভ্রমণ করুন। সেরা দামে প্রিমিয়াম ট্যুর প্যাকেজ বুক করুন।",
+  alternates: { canonical: "https://mk-travel-agency.vercel.app" },
+  openGraph: {
+    title: "MK Travel Agency | বাংলাদেশের সেরা ট্যুর অপারেটর",
+    description: "বাংলাদেশের সেরা ট্যুর প্যাকেজ। কক্সবাজার, সুন্দরবন, সিলেট সহ সারা বাংলাদেশে ভ্রমণ করুন।",
+    url: "https://mk-travel-agency.vercel.app",
+    images: [{ url: "https://images.unsplash.com/photo-1596402184320-417e7178b2cd?w=1200&q=80", width: 1200, height: 630, alt: "Bangladesh Tour Packages" }],
+  },
+};
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 
@@ -113,9 +113,9 @@ function DestIcon({ type }) {
 
 async function getFeaturedPackages() {
   try {
-    await connectDB();
-    const packages = await Package.find({ featured: true }).limit(6).lean();
-    return JSON.parse(JSON.stringify(packages));
+    const col = await connect("packages");
+    const pkgs = await col.find({ featured: true }).limit(6).toArray();
+    return JSON.parse(JSON.stringify(pkgs));
   } catch {
     return [];
   }

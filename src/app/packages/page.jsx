@@ -1,21 +1,38 @@
-import { connectDB } from "@/lib/mongodb";
-import Package from "@/models/Package";
+import { connect } from "@/lib/mongodb";
 import PackageCard from "@/components/PackageCard";
 import PackageFilters from "./PackageFilters";
 
-async function getPackages(category) {
-  await connectDB();
-  const query = category ? { category } : {};
-  const packages = await Package.find(query).sort({ createdAt: -1 }).lean();
-  return JSON.parse(JSON.stringify(packages));
+async function getPackages(category, q) {
+  const query = {};
+  if (category) query.category = category;
+  if (q) {
+    query.$or = [
+      { title: { $regex: q, $options: "i" } },
+      { destination: { $regex: q, $options: "i" } },
+      { description: { $regex: q, $options: "i" } },
+    ];
+  }
+  const col = await connect("packages");
+  const pkgs = await col.find(query).sort({ createdAt: -1 }).toArray();
+  return JSON.parse(JSON.stringify(pkgs));
 }
 
-export const metadata = { title: "Tour Packages | MK Travel Agency" };
+export const metadata = {
+  title: "Tour Packages | MK Travel Agency",
+  description: "বাংলাদেশের সেরা ট্যুর প্যাকেজ। কক্সবাজার, সুন্দরবন, সিলেট, বান্দরবান, সেন্ট মার্টিন ও রাঙামাটি — সব গন্তব্যের প্যাকেজ এক জায়গায়।",
+  alternates: { canonical: "https://mk-travel-agency.vercel.app/packages" },
+  openGraph: {
+    title: "Tour Packages | MK Travel Agency",
+    description: "বাংলাদেশের সেরা ট্যুর প্যাকেজ এক জায়গায়।",
+    url: "https://mk-travel-agency.vercel.app/packages",
+    images: [{ url: "https://images.unsplash.com/photo-1596402184320-417e7178b2cd?w=1200&q=80", width: 1200, height: 630 }],
+  },
+};
 
 export default async function PackagesPage({ searchParams }) {
-  const { category } = await searchParams;
+  const { category, q } = await searchParams;
   let packages = [];
-  try { packages = await getPackages(category); } catch { /* DB not connected */ }
+  try { packages = await getPackages(category, q); } catch { /* DB not connected */ }
 
   return (
     <div className="min-h-screen bg-slate-950">
@@ -34,13 +51,14 @@ export default async function PackagesPage({ searchParams }) {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 pb-24">
-        {/* Filters */}
+        {/* Filters + Search */}
         <PackageFilters active={category} />
 
         {packages.length > 0 ? (
           <>
             <p className="text-slate-600 text-xs font-black uppercase tracking-widest mt-8 mb-6">
               {packages.length} Packages Found
+              {q && <span className="text-emerald-600 ml-2">— "{q}"</span>}
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {packages.map((pkg) => (
@@ -51,8 +69,12 @@ export default async function PackagesPage({ searchParams }) {
         ) : (
           <div className="text-center py-32">
             <p className="text-6xl mb-6">🌿</p>
-            <p className="text-2xl font-black text-slate-400 tracking-tighter">No Packages Found</p>
-            <p className="text-slate-600 font-bold mt-2 text-sm">Try a different category</p>
+            <p className="text-2xl font-black text-slate-400 tracking-tighter">
+              {q ? `"${q}" — কোনো প্যাকেজ পাওয়া যায়নি` : "No Packages Found"}
+            </p>
+            <p className="text-slate-600 font-bold mt-2 text-sm">
+              {q ? "অন্য কিছু দিয়ে খোঁজার চেষ্টা করুন" : "Try a different category"}
+            </p>
           </div>
         )}
       </div>

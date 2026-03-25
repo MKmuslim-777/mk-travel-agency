@@ -30,7 +30,7 @@ env:
     value: 1:478218945063:web:5d9b2a7e18b5bbe7f50402
 
   - variable: NEXTAUTH_URL
-    value: https://mk-travel-agency--mk-travel-agency.asia-south1.hosted.app
+    value: https://mk-travel-agency.vercel.app
 
   # Secret env vars — stored in Google Cloud Secret Manager
   # Run these commands once to create the secrets:

@@ -1,21 +1,30 @@
-import { connectDB } from "@/lib/mongodb";
-import Package from "@/models/Package";
+import { connect } from "@/lib/mongodb";
 import { auth } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
 
 export async function GET(request) {
   try {
-    await connectDB();
     const { searchParams } = new URL(request.url);
     const category = searchParams.get("category");
     const featured = searchParams.get("featured");
+    const q = searchParams.get("q");
 
     const query = {};
     if (category) query.category = category;
     if (featured === "true") query.featured = true;
+    if (q) {
+      query.$or = [
+        { title: { $regex: q, $options: "i" } },
+        { destination: { $regex: q, $options: "i" } },
+        { description: { $regex: q, $options: "i" } },
+      ];
+    }
 
-    const packages = await Package.find(query).sort({ createdAt: -1 });
+    const col = await connect("packages");
+    const packages = await col.find(query).sort({ createdAt: -1 }).toArray();
     return Response.json(packages);
   } catch (err) {
+    console.error(err);
     return Response.json({ error: "Server error" }, { status: 500 });
   }
 }
@@ -23,15 +32,22 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const session = await auth();
-    if (!session || session.user.role !== "admin") {
+    if (!session || !["admin", "moderator"].includes(session.user.role)) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    await connectDB();
     const data = await request.json();
-    const pkg = await Package.create(data);
-    return Response.json(pkg, { status: 201 });
+    const col = await connect("packages");
+    const result = await col.insertOne({ ...data, createdAt: new Date() });
+
+    // সব package-related page revalidate করো
+    revalidatePath("/packages", "page");
+    revalidatePath("/admin", "page");
+    revalidatePath("/", "page");
+
+    return Response.json({ _id: result.insertedId, ...data }, { status: 201 });
   } catch (err) {
+    console.error(err);
     return Response.json({ error: "Server error" }, { status: 500 });
   }
 }
