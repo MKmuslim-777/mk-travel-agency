@@ -116,17 +116,26 @@ export default async function AboutPage() {
             <span className="text-emerald-500 font-black text-xs uppercase tracking-[0.3em]">The People</span>
             <h2 className="text-5xl font-black text-white tracking-tighter mt-4">Meet Our Team</h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {team.map((member, i) => (
-              <div key={i} className="bg-slate-900/80 border border-slate-800 rounded-[2rem] p-6 text-center hover:border-emerald-500/20 hover:-translate-y-2 transition-all duration-500 group">
-                <div className="w-20 h-20 rounded-full overflow-hidden mx-auto mb-4 ring-2 ring-slate-700 group-hover:ring-emerald-500/30 transition-all">
-                  {member.img
-                    ? <img src={member.img} alt={member.name} className="w-full h-full object-cover" />
-                    : <div className="w-full h-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-black text-2xl">{member.name?.charAt(0)}</div>
-                  }
+              <div key={i} className="group relative bg-slate-900 border border-slate-800 rounded-[2rem] p-6 text-center hover:border-emerald-500/30 hover:-translate-y-2 transition-all duration-500 overflow-hidden">
+                {/* Glow bg */}
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(16,185,129,0.06)_0%,_transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                {/* Avatar */}
+                <div className="relative mx-auto mb-5 w-24 h-24">
+                  <div className="absolute inset-0 rounded-full bg-emerald-500/20 blur-md group-hover:bg-emerald-500/30 transition-all duration-500" />
+                  <div className="relative w-24 h-24 rounded-full overflow-hidden ring-2 ring-slate-700 group-hover:ring-emerald-500/50 transition-all duration-500">
+                    {member.img
+                      ? <img src={member.img} alt={member.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                      : <div className="w-full h-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-black text-3xl">{member.name?.charAt(0)}</div>
+                    }
+                  </div>
                 </div>
-                <h3 className="font-black text-white text-sm tracking-tight">{member.name}</h3>
-                <p className="text-xs text-slate-500 font-bold mt-1">{member.role}</p>
+                {/* Info */}
+                <h3 className="font-black text-white text-base tracking-tight">{member.name}</h3>
+                <p className="text-xs text-emerald-400 font-bold mt-1 uppercase tracking-widest">{member.role}</p>
+                {/* Bottom accent line */}
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 group-hover:w-16 h-0.5 bg-emerald-500 rounded-full transition-all duration-500" />
               </div>
             ))}
           </div>
