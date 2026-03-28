@@ -226,7 +226,7 @@ export default async function HomePage() {
             {destinations.map((d) => (
               <Link
                 key={d.name}
-                href={`/packages?division=${d.division}`}
+                href={`/packages?destination=${encodeURIComponent(d.name)}`}
                 className="group relative h-[380px] rounded-[2.5rem] overflow-hidden hover:-translate-y-3 transition-all duration-500"
               >
                 <img
