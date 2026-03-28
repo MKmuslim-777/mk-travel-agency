@@ -322,6 +322,7 @@ export default function SiteSettingsPage() {
                       { k: "tagline",  l: "Tagline" },
                       { k: "bestTime", l: "Best Time" },
                       { k: "packages", l: "Packages Count" },
+                      { k: "division", l: "Division (for filter)" },
                     ].map(({ k, l }) => (
                       <div key={k}>
                         <label className={lbl}>{l}</label>

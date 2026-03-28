@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FaArrowRight, FaStar, FaMapMarkerAlt } from "react-icons/fa";
+import { FaArrowRight, FaStar, FaMapMarkerAlt, FaClock } from "react-icons/fa";
 import { MdBeachAccess, MdForest, MdLandscape, MdFlight } from "react-icons/md";
 import { connect } from "@/lib/mongodb";
 
@@ -18,57 +18,16 @@ export const metadata = {
 };
 
 const DEFAULT_DESTINATIONS = [
-  {
-    name: "কক্সবাজার", tagline: "বিশ্বের দীর্ঘতম সমুদ্র সৈকত",
-    desc: "১২০ কিলোমিটার দীর্ঘ বালুকাময় সৈকত, সানসেট পয়েন্ট, হিমছড়ি ঝর্ণা ও ইনানী বিচ।",
-    icon: "beach", color: "from-cyan-600 to-blue-800",
-    image: "https://images.unsplash.com/photo-1596402184320-417e7178b2cd?w=1200&q=80",
-    highlights: ["সানসেট বিচ", "হিমছড়ি ঝর্ণা", "ইনানী বিচ", "রাডার হিল"],
-    rating: "4.9", packages: "15+", bestTime: "অক্টোবর — মার্চ", division: "Chittagong",
-  },
-  {
-    name: "সুন্দরবন", tagline: "পৃথিবীর বৃহত্তম ম্যানগ্রোভ বন",
-    desc: "ইউনেস্কো বিশ্ব ঐতিহ্যবাহী স্থান — রয়েল বেঙ্গল টাইগার ও ইরাবতী ডলফিনের আবাসস্থল।",
-    icon: "forest", color: "from-emerald-700 to-green-900",
-    image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&q=80",
-    highlights: ["রয়েল বেঙ্গল টাইগার", "করমজল", "কটকা বিচ", "হিরণ পয়েন্ট"],
-    rating: "4.8", packages: "8+", bestTime: "নভেম্বর — ফেব্রুয়ারি", division: "Khulna",
-  },
-  {
-    name: "সিলেট", tagline: "চা বাগান ও হাওরের দেশ",
-    desc: "সবুজ চা বাগান, রাতারগুল জলাবন, বিছানাকান্দি ও জাফলং।",
-    icon: "landscape", color: "from-teal-600 to-emerald-800",
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80",
-    highlights: ["রাতারগুল জলাবন", "বিছানাকান্দি", "জাফলং", "লালাখাল"],
-    rating: "4.8", packages: "10+", bestTime: "অক্টোবর — এপ্রিল", division: "Sylhet",
-  },
-  {
-    name: "বান্দরবান", tagline: "মেঘের রাজ্যে পাহাড়ি অ্যাডভেঞ্চার",
-    desc: "নীলগিরি, বগালেক, নাফাখুম ঝর্ণা ও কেওক্রাডং।",
-    icon: "mountain", color: "from-violet-700 to-purple-900",
-    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80",
-    highlights: ["নীলগিরি", "বগালেক", "নাফাখুম ঝর্ণা", "কেওক্রাডং"],
-    rating: "4.9", packages: "12+", bestTime: "সেপ্টেম্বর — ফেব্রুয়ারি", division: "Chittagong",
-  },
-  {
-    name: "সেন্ট মার্টিন", tagline: "বাংলাদেশের একমাত্র প্রবাল দ্বীপ",
-    desc: "স্বচ্ছ নীল জল, প্রবাল প্রাচীর ও নারিকেল গাছের সারি।",
-    icon: "beach", color: "from-sky-600 to-indigo-800",
-    image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1200&q=80",
-    highlights: ["প্রবাল প্রাচীর", "ছেঁড়াদ্বীপ", "স্নোরকেলিং", "সানরাইজ বিচ"],
-    rating: "4.7", packages: "6+", bestTime: "নভেম্বর — মার্চ", division: "Chittagong",
-  },
-  {
-    name: "রাঙামাটি", tagline: "কাপ্তাই লেকের নীল জলের শহর",
-    desc: "কাপ্তাই লেকের বুকে নৌকায় ভেসে পাহাড়ি জীবনের স্বাদ নিন।",
-    icon: "landscape", color: "from-rose-700 to-pink-900",
-    image: "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=80",
-    highlights: ["কাপ্তাই লেক", "ঝুলন্ত সেতু", "সুবলং ঝর্ণা", "পেদা টিং টিং"],
-    rating: "4.7", packages: "7+", bestTime: "অক্টোবর — মার্চ", division: "Chittagong",
-  },
+  { name: "কক্সবাজার",   tagline: "বিশ্বের দীর্ঘতম সমুদ্র সৈকত",      icon: "beach",    color: "from-cyan-500 to-blue-700",     image: "https://images.unsplash.com/photo-1596402184320-417e7178b2cd?w=800&q=80",   rating: "4.9", packages: "15+", bestTime: "অক্টোবর — মার্চ",      division: "Chittagong" },
+  { name: "সুন্দরবন",    tagline: "পৃথিবীর বৃহত্তম ম্যানগ্রোভ বন",    icon: "forest",   color: "from-emerald-600 to-green-900",  image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80",   rating: "4.8", packages: "8+",  bestTime: "নভেম্বর — ফেব্রুয়ারি", division: "Khulna"     },
+  { name: "সিলেট",       tagline: "চা বাগান ও হাওরের দেশ",             icon: "landscape", color: "from-teal-500 to-emerald-800",   image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80",   rating: "4.8", packages: "10+", bestTime: "অক্টোবর — এপ্রিল",     division: "Sylhet"     },
+  { name: "বান্দরবান",   tagline: "মেঘের রাজ্যে পাহাড়ি অ্যাডভেঞ্চার", icon: "mountain", color: "from-violet-600 to-purple-900",  image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",  rating: "4.9", packages: "12+", bestTime: "সেপ্টেম্বর — ফেব্রুয়ারি", division: "Chittagong" },
+  { name: "সেন্ট মার্টিন", tagline: "বাংলাদেশের একমাত্র প্রবাল দ্বীপ", icon: "beach",   color: "from-sky-500 to-indigo-800",     image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80",   rating: "4.7", packages: "6+",  bestTime: "নভেম্বর — মার্চ",      division: "Chittagong" },
+  { name: "রাঙামাটি",    tagline: "কাপ্তাই লেকের নীল জলের শহর",       icon: "landscape", color: "from-rose-600 to-pink-900",      image: "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=80",  rating: "4.7", packages: "7+",  bestTime: "অক্টোবর — মার্চ",      division: "Chittagong" },
+  { name: "খাগড়াছড়ি",  tagline: "পাহাড়ি ঝর্ণা ও আদিবাসী সংস্কৃতি", icon: "mountain", color: "from-amber-600 to-orange-900",   image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80",  rating: "4.6", packages: "5+",  bestTime: "অক্টোবর — মার্চ",      division: "Chittagong" },
+  { name: "কুয়াকাটা",   tagline: "সূর্যোদয় ও সূর্যাস্তের সৈকত",      icon: "beach",    color: "from-orange-500 to-red-800",     image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80",  rating: "4.6", packages: "4+",  bestTime: "নভেম্বর — ফেব্রুয়ারি", division: "Barisal"    },
 ];
 
-// Merge DB destinations with defaults (keep icon/color/highlights/division from defaults)
 function mergeDestinations(dbDests, defaults) {
   if (!dbDests?.length) return defaults;
   return dbDests.map((d, i) => {
@@ -80,14 +39,15 @@ function mergeDestinations(dbDests, defaults) {
       bestTime: d.bestTime || def.bestTime,
       packages: d.packages || def.packages,
       image:    d.image    || def.image,
+      division: d.division || def.division,
     };
   });
 }
 
 function DestIcon({ type }) {
-  const cls = "text-3xl text-white";
-  if (type === "beach")   return <MdBeachAccess className={cls} />;
-  if (type === "forest")  return <MdForest className={cls} />;
+  const cls = "text-2xl text-white drop-shadow";
+  if (type === "beach")    return <MdBeachAccess className={cls} />;
+  if (type === "forest")   return <MdForest className={cls} />;
   if (type === "mountain") return <MdFlight className={`${cls} rotate-45`} />;
   return <MdLandscape className={cls} />;
 }
@@ -106,76 +66,80 @@ export default async function DestinationsPage() {
   return (
     <div className="min-h-screen bg-slate-950">
       {/* Hero */}
-      <section className="relative pt-40 pb-24 px-4 text-center overflow-hidden">
+      <section className="relative pt-40 pb-16 px-4 text-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/5 via-transparent to-transparent pointer-events-none" />
-        <div className="relative z-10 max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-6 py-2.5 text-xs font-black text-emerald-400 uppercase tracking-[0.2em] mb-8">
+        <div className="relative z-10 max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-6 py-2.5 text-xs font-black text-emerald-400 uppercase tracking-[0.2em] mb-6">
             <FaMapMarkerAlt /> বাংলাদেশের সেরা গন্তব্য
           </div>
-          <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-[1.05] mb-6">
-            আপনার পরবর্তী <br />
+          <h1 className="text-5xl md:text-6xl font-black text-white tracking-tighter leading-tight mb-4">
+            আপনার পরবর্তী{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">অ্যাডভেঞ্চার</span>
           </h1>
-          <p className="text-slate-400 text-lg font-medium max-w-2xl mx-auto leading-relaxed">
-            বাংলাদেশের {destinations.length}টি অসাধারণ গন্তব্য — সমুদ্র থেকে পাহাড়, বন থেকে দ্বীপ।
+          <p className="text-slate-400 text-base font-medium max-w-xl mx-auto">
+            {destinations.length}টি অসাধারণ গন্তব্য — সমুদ্র থেকে পাহাড়, বন থেকে দ্বীপ। একটি বেছে নিন।
           </p>
         </div>
       </section>
 
-      {/* Grid */}
+      {/* Cards Grid */}
       <section className="pb-32 px-4">
-        <div className="max-w-7xl mx-auto space-y-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {destinations.map((d, i) => (
-            <div key={d.name + i}
-              className={`group grid lg:grid-cols-2 gap-0 rounded-[2.5rem] overflow-hidden border border-slate-800 hover:border-emerald-500/30 transition-all duration-500 ${
-                i % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""
-              }`}>
+            <Link
+              key={d.name + i}
+              href={`/packages?destination=${encodeURIComponent(d.name)}`}
+              className="group relative rounded-[2rem] overflow-hidden border border-slate-800 hover:border-emerald-500/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(16,185,129,0.15)] bg-slate-900"
+            >
               {/* Image */}
-              <div className="relative h-72 lg:h-auto min-h-[320px] overflow-hidden">
-                <img src={d.image} alt={d.name}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                <div className={`absolute inset-0 bg-gradient-to-br ${d.color} opacity-50`} />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
-                <div className="absolute top-6 left-6 w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center">
+              <div className="relative h-52 overflow-hidden">
+                <img
+                  src={d.image}
+                  alt={d.name}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className={`absolute inset-0 bg-gradient-to-br ${d.color} opacity-40 group-hover:opacity-50 transition-opacity duration-500`} />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent" />
+
+                {/* Icon badge */}
+                <div className="absolute top-4 left-4 w-10 h-10 rounded-xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center">
                   <DestIcon type={d.icon} />
                 </div>
-                <div className="absolute bottom-6 left-6 flex items-center gap-2 bg-slate-900/70 backdrop-blur-md border border-slate-700 px-4 py-2 rounded-xl">
-                  <FaStar className="text-amber-400 text-sm" />
-                  <span className="text-white font-black text-sm">{d.rating}</span>
+
+                {/* Rating */}
+                <div className="absolute top-4 right-4 flex items-center gap-1 bg-slate-900/70 backdrop-blur-md border border-slate-700/50 px-2.5 py-1 rounded-xl">
+                  <FaStar className="text-amber-400 text-xs" />
+                  <span className="text-white font-black text-xs">{d.rating}</span>
                 </div>
               </div>
 
               {/* Content */}
-              <div className="bg-slate-900/80 p-8 md:p-12 flex flex-col justify-center">
-                <span className="text-emerald-400 font-black text-xs uppercase tracking-[0.3em] mb-3">
-                  {d.division} Division
-                </span>
-                <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-2">{d.name}</h2>
-                <p className="text-slate-400 font-bold text-sm mb-4">{d.tagline}</p>
-                <p className="text-slate-400 leading-relaxed mb-8 font-medium">{d.desc}</p>
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {d.highlights?.map((h) => (
-                    <span key={h} className="text-xs font-black text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full">{h}</span>
-                  ))}
-                </div>
-                <div className="flex items-center gap-6 mb-8 text-sm">
-                  <div>
-                    <p className="text-slate-600 font-black text-xs uppercase tracking-widest">প্যাকেজ</p>
-                    <p className="text-white font-black">{d.packages}</p>
+              <div className="p-5">
+                <h2 className="text-xl font-black text-white tracking-tight mb-1 group-hover:text-emerald-400 transition-colors duration-300">
+                  {d.name}
+                </h2>
+                <p className="text-slate-500 text-xs font-bold mb-4 line-clamp-1">{d.tagline}</p>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3 text-xs text-slate-500 font-bold">
+                    <span className="flex items-center gap-1">
+                      <FaMapMarkerAlt className="text-emerald-500 text-[10px]" />
+                      {d.packages} packages
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <FaClock className="text-emerald-500 text-[10px]" />
+                      {d.bestTime?.split("—")[0]?.trim()}
+                    </span>
                   </div>
-                  <div className="w-px h-8 bg-slate-800" />
-                  <div>
-                    <p className="text-slate-600 font-black text-xs uppercase tracking-widest">সেরা সময়</p>
-                    <p className="text-white font-black">{d.bestTime}</p>
+                  <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 group-hover:bg-emerald-500 group-hover:border-emerald-500 flex items-center justify-center transition-all duration-300">
+                    <FaArrowRight className="text-emerald-400 group-hover:text-white text-xs transition-colors duration-300" />
                   </div>
                 </div>
-                <Link href={`/packages?division=${d.division}`}
-                  className="group/btn inline-flex items-center gap-3 px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-black rounded-2xl shadow-[0_10px_30px_rgba(16,185,129,0.2)] hover:-translate-y-0.5 transition-all duration-300 self-start">
-                  প্যাকেজ দেখুন
-                  <FaArrowRight className="group-hover/btn:translate-x-1 transition-transform" />
-                </Link>
               </div>
-            </div>
+
+              {/* Bottom glow line */}
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-emerald-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            </Link>
           ))}
         </div>
       </section>

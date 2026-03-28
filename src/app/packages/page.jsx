@@ -2,12 +2,13 @@ import { connect } from "@/lib/mongodb";
 import PackageCard from "@/components/PackageCard";
 import PackageFilters from "./PackageFilters";
 
-async function getPackages(category, q) {
+async function getPackages(category, q, destination) {
   const query = {};
-  if (category) query.category = category;
+  if (category)    query.category = category;
+  if (destination) query.destination = { $regex: destination, $options: "i" };
   if (q) {
     query.$or = [
-      { title: { $regex: q, $options: "i" } },
+      { title:       { $regex: q, $options: "i" } },
       { destination: { $regex: q, $options: "i" } },
       { description: { $regex: q, $options: "i" } },
     ];
@@ -30,9 +31,9 @@ export const metadata = {
 };
 
 export default async function PackagesPage({ searchParams }) {
-  const { category, q } = await searchParams;
+  const { category, q, destination } = await searchParams;
   let packages = [];
-  try { packages = await getPackages(category, q); } catch { /* DB not connected */ }
+  try { packages = await getPackages(category, q, destination); } catch { /* DB not connected */ }
 
   return (
     <div className="min-h-screen bg-slate-950">
@@ -43,10 +44,13 @@ export default async function PackagesPage({ searchParams }) {
           Explore Bangladesh
         </span>
         <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-4">
-          All Packages
+          {destination ? `${destination} Packages` : "All Packages"}
         </h1>
         <p className="text-slate-400 font-bold max-w-lg mx-auto">
-          সারা বাংলাদেশের সেরা ট্যুর প্যাকেজ এক জায়গায়।
+          {destination
+            ? `${destination} এর সেরা ট্যুর প্যাকেজ।`
+            : "সারা বাংলাদেশের সেরা ট্যুর প্যাকেজ এক জায়গায়।"
+          }
         </p>
       </div>
 
@@ -58,6 +62,7 @@ export default async function PackagesPage({ searchParams }) {
           <>
             <p className="text-slate-600 text-xs font-black uppercase tracking-widest mt-8 mb-6">
               {packages.length} Packages Found
+              {destination && <span className="text-emerald-600 ml-2">— {destination}</span>}
               {q && <span className="text-emerald-600 ml-2">— "{q}"</span>}
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
