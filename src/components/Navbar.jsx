@@ -247,7 +247,7 @@ export default function Navbar() {
               <div className="space-y-3">
                 {/* User card */}
                 <div className="flex items-center gap-3 p-4 bg-slate-50 dark:bg-slate-900 rounded-3xl">
-                  <div className="w-12 h-12 rounded-2xl bg-emerald-500 flex items-center justify-center text-white font-bold overflow-hidden">
+                  <div className="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold overflow-hidden">
                     {session.user?.image
                       ? <img src={session.user.image} alt="User" className="w-full h-full object-cover" />
                       : session.user?.name?.charAt(0)

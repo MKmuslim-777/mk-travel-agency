@@ -91,7 +91,7 @@ export default function AdminCharts({ bookings, userName, userImage, role }) {
           onClick={() => router.push("/dashboard/profile")}
           className="flex items-center gap-3 bg-slate-800/60 hover:bg-slate-800 border border-slate-700 rounded-2xl px-4 py-3 transition-all group"
         >
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/20 flex items-center justify-center text-emerald-400 font-black text-base overflow-hidden shrink-0">
+          <div className="w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-500/20 flex items-center justify-center text-emerald-400 font-black text-base overflow-hidden shrink-0">
             {userImage
               ? <img src={userImage} alt={userName} className="w-full h-full object-cover" />
               : userName?.charAt(0)?.toUpperCase()

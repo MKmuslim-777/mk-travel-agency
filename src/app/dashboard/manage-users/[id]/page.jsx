@@ -89,7 +89,7 @@ export default async function UserDetailPage({ params }) {
       {/* User card */}
       <div className="bg-slate-900/80 border border-slate-800 rounded-[2rem] p-6 mb-6">
         <div className="flex flex-col sm:flex-row gap-5 items-start">
-          <div className="w-20 h-20 rounded-[1.5rem] bg-emerald-500/20 border border-emerald-500/30 overflow-hidden flex items-center justify-center text-emerald-400 font-black text-3xl shrink-0">
+          <div className="w-20 h-20 rounded-full bg-emerald-500/20 border border-emerald-500/30 overflow-hidden flex items-center justify-center text-emerald-400 font-black text-3xl shrink-0">
             {user.image
               ? <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
               : user.name?.charAt(0)?.toUpperCase()

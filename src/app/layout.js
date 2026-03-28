@@ -3,6 +3,7 @@ import "./globals.css";
 import SessionWrapper from "@/components/SessionWrapper";
 import ConditionalLayout from "@/components/ConditionalLayout";
 import PWAInstall from "@/components/PWAInstall";
+import LiveChat from "@/components/LiveChat";
 import { Toaster } from "react-hot-toast";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist" });
@@ -50,6 +51,7 @@ export default function RootLayout({ children }) {
             {children}
           </ConditionalLayout>
           <PWAInstall />
+          <LiveChat />
           <Toaster
             position="top-right"
             toastOptions={{

@@ -3,6 +3,7 @@ import { ObjectId } from "mongodb";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import BookingForm from "./BookingForm";
+import ReviewForm from "./ReviewForm";
 import {
   FaStar, FaClock, FaMapMarkerAlt, FaCheck, FaTimes,
   FaArrowLeft, FaUsers, FaBolt, FaShareAlt,
@@ -368,6 +369,11 @@ export default async function PackageDetailPage({ params }) {
             )}
           </div>
 
+          {/* Write a review */}
+          <div className="mb-8">
+            <ReviewForm packageId={pkg._id} />
+          </div>
+
           {reviews.length === 0 ? (
             <div className="text-center py-16 bg-slate-900/50 border border-slate-800 rounded-[2rem]">
               <p className="text-4xl mb-4">💬</p>
@@ -379,7 +385,7 @@ export default async function PackageDetailPage({ params }) {
               {reviews.map((r) => (
                 <div key={r._id} className="bg-slate-900/80 border border-slate-800 rounded-[2rem] p-6 hover:border-emerald-500/20 transition-all">
                   <div className="flex items-start gap-4 mb-4">
-                    <div className="w-11 h-11 rounded-2xl bg-emerald-500/20 border border-emerald-500/20 flex items-center justify-center text-emerald-400 font-black text-base overflow-hidden shrink-0">
+                    <div className="w-11 h-11 rounded-full bg-emerald-500/20 border border-emerald-500/20 flex items-center justify-center text-emerald-400 font-black text-base overflow-hidden shrink-0">
                       {r.userImage
                         ? <img src={r.userImage} alt={r.userName} className="w-full h-full object-cover" />
                         : r.userName?.charAt(0)?.toUpperCase()

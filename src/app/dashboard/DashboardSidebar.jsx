@@ -5,7 +5,7 @@ import { signOut } from "next-auth/react";
 import {
   MdHome, MdPerson, MdBookmark, MdFavorite, MdRateReview,
   MdPeople, MdInventory, MdAddBox, MdSettings, MdLogout,
-  MdMenu, MdClose, MdListAlt, MdDashboard, MdOpenInNew,
+  MdMenu, MdClose, MdListAlt, MdDashboard, MdOpenInNew, MdChat,
 } from "react-icons/md";
 import { useState } from "react";
 
@@ -24,6 +24,7 @@ function getSidebarLinks(role) {
     { href: "/dashboard/manage-packages", label: "Manage Packages", icon: <MdInventory size={18} /> },
     { href: "/dashboard/manage-reviews",  label: "Manage Reviews",  icon: <MdListAlt size={18} /> },
     { href: "/dashboard/all-bookings",    label: "All Bookings",    icon: <MdBookmark size={18} /> },
+    { href: "/dashboard/live-chat",       label: "Live Chat",       icon: <MdChat size={18} /> },
   ];
   const adminLinks = [
     { href: "/dashboard/manage-users",  label: "Manage Users",  icon: <MdPeople size={18} />,   divider: true, dividerLabel: "Admin" },
@@ -65,7 +66,7 @@ function SidebarContent({ role, userName, userImage, pathname, onClose }) {
       {/* User card */}
       <div className="px-4 py-4 border-b border-slate-800/60">
         <div className="flex items-center gap-3 bg-slate-800/40 rounded-2xl p-3">
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/20 flex items-center justify-center text-emerald-400 font-black text-base overflow-hidden shrink-0">
+          <div className="w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-500/20 flex items-center justify-center text-emerald-400 font-black text-base overflow-hidden shrink-0">
             {userImage
               ? <img src={userImage} alt={userName} className="w-full h-full object-cover" />
               : userName?.charAt(0)?.toUpperCase()

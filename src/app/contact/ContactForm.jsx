@@ -54,15 +54,16 @@ function SuccessState({ onReset }) {
 
 export default function ContactForm({ settings }) {
   const [form, setForm] = useState({ name: "", phone: "", email: "", subject: "", message: "" });
-  const [sent, setSent]     = useState(false);
+  const [sent, setSent]       = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const phone    = settings?.contact?.phone    || "+880 1XXX-XXXXXX";
-  const whatsapp = settings?.contact?.whatsapp || "+880 1XXX-XXXXXX";
-  const email    = settings?.contact?.email    || "info@mktravel.com";
-  const address  = settings?.contact?.address  || "Dhaka, Bangladesh";
+  const phone     = settings?.contact?.phone     || "+880 1XXX-XXXXXX";
+  const whatsapp  = settings?.contact?.whatsapp  || "+880 1XXX-XXXXXX";
+  const email     = settings?.contact?.email     || "info@mktravel.com";
+  const address   = settings?.contact?.address   || "Dhaka, Bangladesh";
   const facebook  = settings?.contact?.facebook  || "#";
   const instagram = settings?.contact?.instagram || "#";
+  const linkedin  = settings?.contact?.linkedin  || "#";
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -70,6 +71,11 @@ export default function ContactForm({ settings }) {
     setTimeout(() => { setLoading(false); setSent(true); setForm({ name: "", phone: "", email: "", subject: "", message: "" }); }, 1500);
   }
 
+  function openLiveChat() {
+    // Trigger the floating LiveChat widget
+    const btn = document.querySelector("[aria-label='Live Chat']");
+    if (btn) btn.click();
+  }
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
       {/* Left */}
@@ -85,7 +91,7 @@ export default function ContactForm({ settings }) {
           <div className="mt-10 pt-8 border-t border-slate-100 dark:border-slate-800">
             <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-5">Social Presence</p>
             <div className="flex gap-4">
-              {[[FaFacebookF, facebook], [FaInstagram, instagram], [FaLinkedinIn, "#"]].map(([Icon, href], i) => (
+              {[[FaFacebookF, facebook], [FaInstagram, instagram], [FaLinkedinIn, linkedin]].map(([Icon, href], i) => (
                 <a key={i} href={href} target="_blank" rel="noopener noreferrer"
                   className="w-11 h-11 rounded-2xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-emerald-500 hover:text-white transition-all shadow-sm">
                   <Icon size={18} />
@@ -94,14 +100,15 @@ export default function ContactForm({ settings }) {
             </div>
           </div>
         </div>
-        <div className="bg-emerald-600 dark:bg-emerald-700 rounded-[2.5rem] p-8 text-white relative overflow-hidden group">
+        <button onClick={openLiveChat}
+          className="w-full text-left bg-emerald-600 dark:bg-emerald-700 rounded-[2.5rem] p-8 text-white relative overflow-hidden group hover:bg-emerald-500 transition-colors cursor-pointer">
           <MdSupportAgent className="absolute -right-4 -bottom-4 text-9xl opacity-10 group-hover:scale-110 transition-transform duration-700" />
           <h4 className="text-xl font-black mb-2 tracking-tight">Customer Support</h4>
           <p className="text-emerald-100 text-sm font-medium leading-relaxed mb-6">আমাদের দক্ষ প্রতিনিধি দল আপনার যে কোনো সমস্যায় তাৎক্ষণিক সমাধান দিতে প্রস্তুত।</p>
           <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-2 rounded-xl text-[10px] font-black uppercase">
-            <div className="w-2 h-2 bg-emerald-300 rounded-full animate-pulse" /> Live Now
+            <div className="w-2 h-2 bg-emerald-300 rounded-full animate-pulse" /> Live Now — Click to Chat
           </div>
-        </div>
+        </button>
       </div>
 
       {/* Right */}

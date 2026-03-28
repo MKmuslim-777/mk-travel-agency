@@ -1,8 +1,11 @@
 import ContactForm from "./ContactForm";
+import { connect } from "@/lib/mongodb";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Contact Us | MK Travel Agency",
-  description: "MK Travel Agency এর সাথে যোগাযোগ করুন। ট্যুর প্যাকেজ বুকিং, কাস্টম ট্যুর প্ল্যান বা যেকোনো প্রশ্নের জন্য আমাদের সাথে যোগাযোগ করুন।",
+  description: "MK Travel Agency এর সাথে যোগাযোগ করুন।",
   alternates: { canonical: "https://mk-travel-agency.vercel.app/contact" },
   openGraph: {
     title: "Contact MK Travel Agency",
@@ -13,9 +16,8 @@ export const metadata = {
 
 async function getSettings() {
   try {
-    const res = await fetch("https://mk-travel-agency.vercel.app/api/settings", { next: { revalidate: 3600 } });
-    if (!res.ok) return {};
-    return res.json();
+    const col = await connect("settings");
+    return await col.findOne({ key: "site" }) || {};
   } catch {
     return {};
   }

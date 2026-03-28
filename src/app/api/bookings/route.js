@@ -3,12 +3,25 @@ import { auth } from "@/lib/auth";
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 
-export async function GET() {
+export async function GET(request) {
   try {
     const session = await auth();
     if (!session) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-    const query = session.user.role === "admin" ? {} : { userId: session.user.id };
+    const { searchParams } = new URL(request.url);
+    const packageId = searchParams.get("packageId");
+
+    // packageId filter — admin/mod only
+    if (packageId) {
+      if (!["admin", "moderator"].includes(session.user.role)) {
+        return Response.json({ error: "Forbidden" }, { status: 403 });
+      }
+      const bookingsCol = await connect("bookings");
+      const bookings = await bookingsCol.find({ packageId }).sort({ createdAt: -1 }).toArray();
+      return Response.json(bookings.map((b) => ({ ...b, _id: b._id.toString() })));
+    }
+
+    const query = ["admin", "moderator"].includes(session.user.role) ? {} : { userId: session.user.id };
     const bookingsCol = await connect("bookings");
     const bookings = await bookingsCol.find(query).sort({ createdAt: -1 }).toArray();
 
