@@ -54,7 +54,7 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { roomId, text, senderId, senderName, role } = body;
+    const { roomId, text, senderId, senderName, senderImage, role } = body;
 
     if (!roomId || !text?.trim() || !senderId) {
       return Response.json({ error: "Missing fields" }, { status: 400 });
@@ -63,11 +63,12 @@ export async function POST(request) {
     const col = await connect("chat_messages");
     const msg = {
       roomId,
-      text:       text.trim(),
+      text:        text.trim(),
       senderId,
-      senderName: senderName || "Guest",
-      role:       role || "user",
-      createdAt:  new Date(),
+      senderName:  senderName  || "Guest",
+      senderImage: senderImage || null,
+      role:        role        || "user",
+      createdAt:   new Date(),
     };
     const result = await col.insertOne(msg);
     return Response.json({ ...msg, _id: result.insertedId.toString() }, { status: 201 });
